@@ -1,0 +1,63 @@
+CREATE DATABASE university;
+USE university;
+CREATE TABLE student(
+	name VARCHAR(50),
+	student_number INT PRIMARY KEY,
+    class INT,
+    major VARCHAR(50)
+);
+CREATE TABLE course(
+	course_name VARCHAR(50),
+    course_number VARCHAR(50) PRIMARY KEY,
+    credit_hours INT,
+    department VARCHAR(50)
+);
+CREATE TABLE section(
+	section_identifier INT PRIMARY KEY,
+    course_number VARCHAR(50),
+    semester VARCHAR(50),
+    year INT,
+    instructor VARCHAR(50),
+    FOREIGN KEY(course_number) REFERENCES course(course_number)
+);
+CREATE TABLE grade_report(
+	student_number INT,
+    section_identifier INT,
+    grade VARCHAR(50),
+    PRIMARY KEY(student_number, section_identifier),
+	FOREIGN KEY(student_number) REFERENCES student(student_number),
+	FOREIGN KEY(section_identifier) REFERENCES section(section_identifier)
+);
+CREATE TABLE prerequisite(
+	course_number VARCHAR(50),
+    prerequisite_number VARCHAR(50),
+    PRIMARY KEY(course_number, prerequisite_number),
+    FOREIGN KEY (course_number)REFERENCES course(course_number),
+	FOREIGN KEY (prerequisite_number)REFERENCES course(course_number)
+);
+INSERT INTO student(name, student_number, class, major) VALUES('Smith', 17, 1, 'CS');
+INSERT INTO student(name, student_number, class, major) VALUES('Brown', 8, 2, 'CS');
+
+INSERT INTO course(course_name, course_number, credit_hours, department) VALUES('Intro to Computer Science', 'CS1310', 4, 'CS');
+INSERT INTO course(course_name, course_number, credit_hours, department) VALUES('Data Structures', 'CS3320', 4, 'CS');
+INSERT INTO course(course_name, course_number, credit_hours, department) VALUES('Discrete Mathematics', 'MATH2410', 3, 'MATH');
+INSERT INTO course(course_name, course_number, credit_hours, department) VALUES('Database', 'CS3380', 3, 'CS');
+
+INSERT INTO section(section_identifier, course_number, semester, year, instructor) VALUES(85, 'MATH2410', 'Fall', 07, 'King');
+INSERT INTO section(section_identifier, course_number, semester, year, instructor) VALUES(92, 'CS1310', 'Fall', 07, 'Anderson');
+INSERT INTO section(section_identifier, course_number, semester, year, instructor) VALUES(102, 'CS3320', 'Spring', 08, 'Knuth');
+INSERT INTO section(section_identifier, course_number, semester, year, instructor) VALUES(112, 'MATH2410', 'Fall', 08, 'Chang');
+INSERT INTO section(section_identifier, course_number, semester, year, instructor) VALUES(119, 'CS1310', 'Fall', 08, 'Anderson');
+INSERT INTO section(section_identifier, course_number, semester, year, instructor) VALUES(135, 'CS3380', 'Fall', 08, 'Stone');
+
+INSERT INTO grade_report(student_number, section_identifier, grade)VALUES(17, 112, 'B');
+INSERT INTO grade_report(student_number, section_identifier, grade)VALUES(17, 119, 'C');
+INSERT INTO grade_report(student_number, section_identifier, grade)VALUES(8, 85, 'A');
+INSERT INTO grade_report(student_number, section_identifier, grade)VALUES(8, 92, 'A');
+INSERT INTO grade_report(student_number, section_identifier, grade)VALUES(8, 102, 'B');
+INSERT INTO grade_report(student_number, section_identifier, grade)VALUES(8, 135, 'A');
+
+INSERT INTO prerequisite(course_number, prerequisite_number) VALUES('CS3380', 'CS3320');
+INSERT INTO prerequisite(course_number, prerequisite_number) VALUES('CS3380', 'MATH2410');
+INSERT INTO prerequisite(course_number, prerequisite_number) VALUES('CS3320', 'CS1310');
+
